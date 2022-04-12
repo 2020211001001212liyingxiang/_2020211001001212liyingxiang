@@ -1,5 +1,7 @@
 package com.liyingxiang.week5;
 
+import com.liyingxiang.dao.UserDao;
+import com.liyingxiang.model.User;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -33,10 +35,11 @@ public class LoginServlet extends HttpServlet {
         conn = (Connection) getServletContext().getAttribute("conn");
     }
 
+    // doGet用于跳转到登录页面，doPost用于验证处理登录信息。
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        doPost(request, response);
+        request.getRequestDispatcher("WEB-INF/views/login.jsp").forward(request, response);
     }
 
     @Override
@@ -45,9 +48,7 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-
+        /*
         String sql = "Select * from usertable where username = ? and password = ?";
         try {
             ps = conn.prepareStatement(sql);
@@ -57,16 +58,13 @@ public class LoginServlet extends HttpServlet {
             if (rs.next()){
                 //out.print("Login Success!!! <br>");
                 //out.print("Welcome,"+ username +" <br>");
-
                 request.setAttribute("id", rs.getInt("id"));
                 request.setAttribute("username", username);
                 request.setAttribute("password", password);
                 request.setAttribute("email", rs.getString("email"));
                 request.setAttribute("gender", rs.getString("gender"));
                 request.setAttribute("birthdate", rs.getString("birthdate"));
-
                 request.getRequestDispatcher("userInfo.jsp").forward(request, response);
-
             }else{
                 request.setAttribute("message", "Username or Password Error!!!");
                 request.getRequestDispatcher("login.jsp").forward(request, response);
@@ -74,6 +72,22 @@ public class LoginServlet extends HttpServlet {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        */
+
+        UserDao userDao = new UserDao();
+        try {
+            User user = userDao.findByUsernamePassword(conn, username, password);
+            if (user != null){
+                request.setAttribute("user", user);
+                request.getRequestDispatcher("WEB-INF/views/userInfo.jsp").forward(request, response);
+            }else {
+                request.setAttribute("message", "Username or Password Error!!!");
+                request.getRequestDispatcher("WEB-INF/views/login.jsp").forward(request, response);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
