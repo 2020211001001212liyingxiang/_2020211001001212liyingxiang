@@ -2,13 +2,13 @@ package com.liyingxiang.dao;
 
 import com.liyingxiang.model.User;
 
-        import java.sql.Connection;
-        import java.sql.PreparedStatement;
-        import java.sql.ResultSet;
-        import java.sql.SQLException;
-        import java.util.ArrayList;
-        import java.util.Date;
-        import java.util.List;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class UserDao implements IUserDao{
     @Override
@@ -42,12 +42,13 @@ public class UserDao implements IUserDao{
     @Override
     public int updateUser(Connection con, User user) throws SQLException {
         //update ...where id=?
-        String sql = "update set username=?, password=?, email=?, gender=?, birthDate=? where id = ?";
+        String sql = "update usertable set username=?, password=?, email=?, gender=?, birthdate=? where id = ?";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setString(1, user.getUsername());
         ps.setString(2, user.getPassword());
         ps.setString(3, user.getEmail());
         ps.setString(4, user.getGender());
+        //(java.sql.Date)向下转型
         ps.setDate(5, (java.sql.Date)user.getBirthDate());
         ps.setInt(6, user.getId());
         int num = ps.executeUpdate();
