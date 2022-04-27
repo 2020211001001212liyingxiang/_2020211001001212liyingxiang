@@ -33,8 +33,7 @@
         <welcome-file>home</welcome-file>
     </welcome-file-list>
 
-    <!--chain of filters-->
-    <!--1st-->
+
     <filter>
         <filter-name>AuthFilter</filter-name>
         <filter-class>com.liyingxiang.filter.AuthFilter</filter-class>

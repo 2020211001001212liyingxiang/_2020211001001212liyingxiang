@@ -78,7 +78,7 @@
 <body>
 
 This is my register page.
-<form action="/2020211001001314LiPingzhou/register" method="post" id="form">
+<form action="/2020211001001212liyingxiang/register" method="post" id="form">
     <table>
         <tr>
             <td><label for="username">Username</label></td>

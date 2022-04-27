@@ -20,11 +20,11 @@ public class FrontEndAuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain Chain) throws IOException, ServletException {
 
-        httpRequest = (HttpServletRequest)request;//change ServletRequest to HttpServletRequest
+        httpRequest = (HttpServletRequest)request;
         //get path
         String path = httpRequest.getRequestURI().substring(httpRequest.getContextPath().length());
         if (path.startsWith("/admin/")){
-            Chain.doFilter(request,response);//go to next filter -AdminAuthenticationFilter
+            Chain.doFilter(request,response);
             return;
         }
 

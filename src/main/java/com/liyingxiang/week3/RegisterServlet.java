@@ -48,8 +48,7 @@ public class RegisterServlet extends HttpServlet {
         String gender = request.getParameter("gender");
         String birthday = request.getParameter("birthday");
 
-        //response.setContentType("text/html");
-        //PrintWriter out = response.getWriter();
+
 
         try {
             String sql1 = "insert into Usertable(username, password, email, gender, birthdate) values(?,?,?,?,?)";

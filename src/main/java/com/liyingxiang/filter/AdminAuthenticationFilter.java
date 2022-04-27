@@ -28,14 +28,14 @@ public class AdminAuthenticationFilter implements Filter {
         if (isLoggedIn && (isLoginRequest || isLoginPage)){
             //the admin is already login ande he is trying login again
             //then forward to the admin homepage
-            request.getRequestDispatcher("/admin/home").forward(httpRequest,httpResponse);//go to home
+            request.getRequestDispatcher("/admin/home").forward(httpRequest,httpResponse);
 
         }else if (isLoggedIn || isLoginRequest){
 
             Chain.doFilter(request,response);//go to next destination
         }else {
             System.out.println(httpRequest.getContextPath());
-            httpResponse.sendRedirect(httpRequest.getContextPath()+"/admin/login");//go to login
+            httpResponse.sendRedirect(httpRequest.getContextPath()+"/admin/login");
         }
     }
 

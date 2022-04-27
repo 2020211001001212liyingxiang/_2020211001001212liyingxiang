@@ -25,7 +25,7 @@ public class HelloFilter implements Filter {
         //request come here before go to the selvet doGet() or doPost()
         System.out.println("I am in HelloFilter-->doFilter() before selvet - (request come here)");
         chain.doFilter(request, response);//call next filter - if no next filter - then go to the selvet
-        //response come back after selvet
+
         System.out.println("I am in HelloFilter-->doFilter() after selvet - (response come here)");
     }
 }

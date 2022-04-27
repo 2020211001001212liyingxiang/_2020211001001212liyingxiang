@@ -27,7 +27,7 @@ public class AuthFilter implements Filter {
         System.out.println("getQueryString-->"+httpRequest.getQueryString());
         System.out.println("getMethod-->"+httpRequest.getMethod());
         chain.doFilter(request, response);//call next filter - if no next filter - then go to the selvet
-        //response come back after selvet
+
         System.out.println("I am in AuthFilter after doFilter()-->"+System.currentTimeMillis());
     }
 }
