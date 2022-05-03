@@ -13,7 +13,7 @@ import java.io.IOException;
 //test 3 url /home,/login,/register.jsp is for these 3 selvet or jsp page
 public class HelloFilter implements Filter {
     public void init(FilterConfig config) throws ServletException {
-        System.out.println("I am in HelloFilter-->init()");//when start tomcat
+        //System.out.println("I am in HelloFilter-->init()");//when start tomcat
     }
 
     public void destroy() {
@@ -25,7 +25,7 @@ public class HelloFilter implements Filter {
         //request come here before go to the selvet doGet() or doPost()
         System.out.println("I am in HelloFilter-->doFilter() before selvet - (request come here)");
         chain.doFilter(request, response);//call next filter - if no next filter - then go to the selvet
-
+        //response come back after selvet
         System.out.println("I am in HelloFilter-->doFilter() after selvet - (response come here)");
     }
 }

@@ -1,43 +1,42 @@
 package com.liyingxiang.week3;
 
-import jakarta.servlet.*;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.*;
-
+import javax.servlet.*;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
-@WebServlet(name = "RegisterServlet", value = "/register")
+@WebServlet(
+        urlPatterns = "/register",
+        loadOnStartup = 1
+)
 public class RegisterServlet extends HttpServlet {
     Connection conn = null;
-    PreparedStatement ps = null;
-    ResultSet rs = null;
 
     @Override
     public void init() throws ServletException {
-        /*
-        ServletContext application = getServletContext();
-        String driver = application.getInitParameter("driver");
-        String url = application.getInitParameter("url");
-        String username = application.getInitParameter("Username");
-        String password = application.getInitParameter("Password");
+        super.init();
+       /* ServletContext context = getServletContext();
+        String driver = context.getInitParameter("driver");
+        String url = context.getInitParameter("url");
+        String username = context.getInitParameter("username");
+        String password = context.getInitParameter("password");
         try {
             Class.forName(driver);
-            conn = DriverManager.getConnection(url, username, password);
-        } catch (ClassNotFoundException | SQLException e) {
+            conn = DriverManager.getConnection(url,username,password);
+            System.out.println("Connection --> "+conn);
+        } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
-         */
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }*/
         conn = (Connection) getServletContext().getAttribute("conn");
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        request.getRequestDispatcher("WEB-INF/views/register.jsp").forward(request, response);
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("WEB-INF/views/register.jsp").forward(request,response);
     }
 
     @Override
@@ -46,57 +45,79 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
         String email = request.getParameter("email");
         String gender = request.getParameter("gender");
-        String birthday = request.getParameter("birthday");
+        String birthdate = request.getParameter("birthdate");
 
+        response.setContentType("text/html;charset=utf-8");
+        PrintWriter out = response.getWriter();
+       /* out.println("<html>");
+        out.println("   <head>");
+        out.println("       <title>UsersTable</title>");
+        out.println("   </head>");
+        out.println("   <body>");
+        out.println("       <table width=540 border=1 align=center>");
+        out.println("           <caption>Users</caption>");
+        out.println("           <tr>");
+        out.println("               <td>ID</td>");
+        out.println("               <td>UserName</td>");
+        out.println("               <td>PassWord</td>");
+        out.println("               <td>Email</td>");
+        out.println("               <td>Gender</td>");
+        out.println("               <td>BirthDate</td>");
+        out.println("           </tr>");*/
 
-
+        String sql = "INSERT INTO Users(username,password,email,gender,birthdate) VALUES(?,?,?,?,?)";
         try {
-            String sql1 = "insert into Usertable(username, password, email, gender, birthdate) values(?,?,?,?,?)";
-            ps = conn.prepareStatement(sql1);
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ps.setString(3, email);
-            ps.setString(4, gender);
-            ps.setDate(5, Date.valueOf(birthday));
-            int num = ps.executeUpdate();
-            System.out.println("num-->" + num);
+            //这里不用插id是因为在数据库的表中设置为了标识增量（自增1，第一行默认插入1）
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1,username);
+            ps.setString(2,password);
+            ps.setString(3,email);
+            ps.setString(4,gender);
+            ps.setDate(5, Date.valueOf(birthdate));
+            ps.executeUpdate();
 
-            /*
-            String sql2 = "select * from Usertable";
-            ps = conn.prepareStatement(sql2);
-            rs = ps.executeQuery();
-            while (rs.next()){
-                String id = rs.getString("id");
-                String username2 = rs.getString("username");
-                String password2 = rs.getString("password");
-                String email2 = rs.getString("email");
-                String gender2 = rs.getString("gender");
-                String birthday2 = rs.getString("birthdate");
-            }
-             */
-            response.sendRedirect(request.getContextPath() + "/login.jsp");
-
+            //rs = stmt.executeQuery(sql2);
+            /*while (rs.next()){
+                int id1 = rs.getInt("id");
+                String username1 = rs.getString("username");
+                String password1 =rs.getString("password");
+                String email1 = rs.getString("email");
+                String gender1 = rs.getString("gender");
+                String birthdate1 = rs.getString("birthdate");
+                out.println("           <tr>");
+                out.println(               "<td>"+id1+"</td>");
+                out.println(               "<td>"+username1+"</td>");
+                out.println(               "<td>"+password1+"</td>");
+                out.println(               "<td>"+email1+"</td>");
+                out.println(               "<td>"+gender1+"</td>");
+                out.println(               "<td>"+birthdate1+"</td>");
+                out.println("           </tr>");
+            }*/
+            /*request.setAttribute("rsname",rs);
+            request.getRequestDispatcher("userList.jsp").forward(request,response);*/
+            //after register a new user -> user can login
+            response.sendRedirect("login");//LoginServlet
+            /*rs.close();
+            stmt.close();*/
+            //System.out.println("after forward");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        /*out.println("       </table>");
+        out.println("   </body>");
+        out.println("</html>");*/
+        out.close();
+
 
     }
 
     @Override
     public void destroy() {
-        if (rs!=null){
-            try {
-                rs.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-        if (ps!=null){
-            try {
-                ps.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        super.destroy();
+        try {
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }

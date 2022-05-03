@@ -20,14 +20,27 @@
         <param-name>password</param-name>
         <param-value>117215</param-value>
     </context-param>
+    <context-param>
+        <param-name>javax.faces.CONFIG_FILES</param-name>
+        <param-value>/Maven__javax_servlet_servlet_api_2_4.xml</param-value>
+    </context-param>
 
     <servlet>
         <servlet-name>HelloWorld</servlet-name>
         <servlet-class>com.liyingxiang.week2.HelloWorldServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
     <servlet-mapping>
         <servlet-name>HelloWorld</servlet-name>
         <url-pattern>/hello</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>home</welcome-file>
