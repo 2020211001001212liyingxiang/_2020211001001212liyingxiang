@@ -4,7 +4,7 @@
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
-        <module>2020211001001212liyingxiang</module>
+        <module>2020211001001322LuoXianming</module>
         <packaging>war</packaging>
       </options>
     </properties>
@@ -16,6 +16,7 @@
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: javax.servlet:jsp-api:2.0" />
           <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.4" />
+          <element id="library" level="project" name="Maven: javax.servlet:jstl:1.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">
